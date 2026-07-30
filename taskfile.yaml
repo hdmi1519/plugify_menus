@@ -1,0 +1,71 @@
+version: '3'
+
+vars:
+  PLUGIN_NAME: menus
+  BUILD_BASE: ./build
+
+  PLUGIN_ROOT: '{{.BUILD_BASE}}/addons/plugify/envs/plugins'
+  DATA_TRANSLATIONS_ROOT: '{{.BUILD_BASE}}/addons/plugify/data/translations/{{.PLUGIN_NAME}}'
+  DATA_GAMEDATA_ROOT: '{{.BUILD_BASE}}/addons/plugify/data/gamedata'
+
+tasks:
+  build:
+    desc: Build plugin
+    cmds:
+      - mkdir -p {{.PLUGIN_ROOT}}/bin
+      - mkdir -p {{.DATA_TRANSLATIONS_ROOT}}
+      - mkdir -p {{.DATA_GAMEDATA_ROOT}}
+      
+      - |
+        docker run --rm --platform linux/amd64 -v "$(pwd):/app" -w /app steamrt-builder \
+        go build -buildmode=c-shared -o {{.PLUGIN_ROOT}}/bin/{{.PLUGIN_NAME}}.so ./cmd/plugin
+      
+      - |
+        if [ -f "./{{.PLUGIN_NAME}}.pplugin" ]; then
+          cp -f ./{{.PLUGIN_NAME}}.pplugin {{.PLUGIN_ROOT}}/{{.PLUGIN_NAME}}.pplugin
+        else
+          echo "WARNING: {{.PLUGIN_NAME}}.pplugin not found!"
+        fi
+      
+      - |
+        if [ -d "./assets/translations" ]; then
+          cp -r ./assets/translations/* {{.DATA_TRANSLATIONS_ROOT}}/
+        fi
+      
+      - |
+        if [ -d "./assets/gamedata" ]; then
+          cp -r ./assets/gamedata/* {{.DATA_GAMEDATA_ROOT}}/
+        else
+          echo "WARNING: assets/gamedata not found!"
+        fi
+
+      - |
+        echo "Build completed: {{.BUILD_BASE}}"
+
+  gen:
+    desc: Generate plugin manifest
+    cmds:
+      - |
+        go run ./cmd/generator/main.go \
+          -name "{{.PLUGIN_NAME}}" \
+          -version "1.0.0" \
+          -desc "Utils menu plugin" \
+          -author "hdmi1519" \
+          -website "https://github.com/hdmi1519" \
+          -license "MIT" \
+          -output "./{{.PLUGIN_NAME}}.pplugin" \
+          -entry "bin/{{.PLUGIN_NAME}}" \
+          -dependencies "s2sdk, polyhook"
+
+      - jq '.methods |= unique_by(.name)' ./{{.PLUGIN_NAME}}.pplugin > ./{{.PLUGIN_NAME}}.tmp && mv ./{{.PLUGIN_NAME}}.tmp ./{{.PLUGIN_NAME}}.pplugin
+
+  bind:
+    desc: Generate Go bindings from manifest into ./bindings
+    cmds:
+      - mkdir -p ./bindings
+      - ./plugify-gen -manifest ./{{.PLUGIN_NAME}}.pplugin -output ./bindings -lang golang
+
+  clean:
+    desc: Clean build directory
+    cmds:
+      - rm -rf {{.BUILD_BASE}}

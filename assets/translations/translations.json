@@ -1,0 +1,22 @@
+{
+  "menus": {
+    "nav": {
+      "back": {
+        "en": "Back",
+        "ru": "Назад"
+      },
+      "menu_back": {
+        "en": "Return Back",
+        "ru": "Вернуться назад"
+      },
+      "next": {
+        "en": "Next",
+        "ru": "Вперед"
+      }
+    },
+    "footer_controls": {
+      "en": "[W/S] Navigate | [E] Select | [R] Close",
+      "ru": "[W/S] Навигация | [E] Выбрать | [R] Закрыть"
+    }
+  }
+}

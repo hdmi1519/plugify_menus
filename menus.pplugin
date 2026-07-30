@@ -1,0 +1,187 @@
+{
+  "$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+  "name": "menus",
+  "version": "1.0.0",
+  "description": "Utils menu plugin",
+  "author": "hdmi1519",
+  "website": "https://github.com/hdmi1519",
+  "license": "MIT",
+  "dependencies": [
+    {
+      "name": "s2sdk"
+    },
+    {
+      "name": "polyhook"
+    }
+  ],
+  "entry": "bin/menus",
+  "language": "golang",
+  "methods": [
+    {
+      "name": "AddButton",
+      "funcName": "__AddButton",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        },
+        {
+          "type": "string",
+          "name": "back"
+        },
+        {
+          "type": "string",
+          "name": "text"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "AddSubmenu",
+      "funcName": "__AddSubmenu",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        },
+        {
+          "type": "string",
+          "name": "back"
+        },
+        {
+          "type": "string",
+          "name": "text"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "CloseMenu",
+      "funcName": "__CloseMenu",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "CreateMenu",
+      "funcName": "__CreateMenu",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "IsPlayerMenuOpen",
+      "funcName": "__IsPlayerMenuOpen",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        }
+      ],
+      "retType": {
+        "type": "bool"
+      }
+    },
+    {
+      "name": "OpenMenu",
+      "funcName": "__OpenMenu",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        },
+        {
+          "type": "function",
+          "name": "callback",
+          "prototype": {
+            "name": "MenuCallback",
+            "funcName": "_",
+            "paramTypes": [
+              {
+                "type": "string",
+                "name": "action"
+              },
+              {
+                "type": "int32",
+                "name": "playerSlot"
+              }
+            ],
+            "retType": {
+              "type": "void"
+            }
+          }
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "SetAutoCloseTime",
+      "funcName": "__SetAutoCloseTime",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        },
+        {
+          "type": "double",
+          "name": "seconds"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "SetMaxVisibleItems",
+      "funcName": "__SetMaxVisibleItems",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        },
+        {
+          "type": "int32",
+          "name": "count"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    },
+    {
+      "name": "SetTitle",
+      "funcName": "__SetTitle",
+      "paramTypes": [
+        {
+          "type": "int32",
+          "name": "slot"
+        },
+        {
+          "type": "string",
+          "name": "title"
+        }
+      ],
+      "retType": {
+        "type": "void"
+      }
+    }
+  ]
+}

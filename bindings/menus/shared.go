@@ -1,0 +1,6 @@
+package menus
+
+import "runtime/debug"
+
+var buildInfo, _ = debug.ReadBuildInfo()
+var ModuleName = buildInfo.Main.Path
